@@ -236,7 +236,7 @@ Après modification de la configuration Apache, vérifier puis recharger le serv
 
 Les sources `cv.yml`, `templates/`, `scripts/` et le `Makefile` ne sont pas nécessaires sur le serveur web.
 
-Les pictogrammes sont stockés localement pour éviter toute dépendance au chargement. LinkedIn provient de [Simple Icons](https://simpleicons.org/) et Malt de son [kit média officiel](https://newsroom.malt.com/media-kit-uk).
+Les pictogrammes sont stockés localement pour éviter toute dépendance au chargement. LinkedIn et GitHub proviennent de [Simple Icons](https://simpleicons.org/) et Malt de son [kit média officiel](https://newsroom.malt.com/media-kit-uk).
 
 Le portrait original est celui indiqué par `person.photo`. Après son remplacement, exécuter `make optimize-photo`, puis `make update` pour reconstruire automatiquement les variantes responsives AVIF, WebP et JPEG à côté de ce fichier. Le modèle utilise `assets/portrait-placeholder.svg`, qui ne nécessite aucune optimisation.
 

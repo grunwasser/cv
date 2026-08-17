@@ -46,5 +46,6 @@ Aucune habilitation particulière requise.
 - E-mail : camille.martin@example.com
 - [Prendre rendez-vous](https://example.com/rendez-vous)
 - [LinkedIn](https://www.linkedin.com/in/camille-martin-example)
+- [GitHub](https://github.com/camille-martin-example)
 - [CV HTML](https://cv.example.com/)
 - [Données JSON](https://cv.example.com/resume.json)

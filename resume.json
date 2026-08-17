@@ -18,6 +18,11 @@
         "network": "LinkedIn",
         "username": "camille-martin-example",
         "url": "https://www.linkedin.com/in/camille-martin-example"
+      },
+      {
+        "network": "GitHub",
+        "username": "camille-martin-example",
+        "url": "https://github.com/camille-martin-example"
       }
     ],
     "availability": {

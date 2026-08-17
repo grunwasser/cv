@@ -1,0 +1,36 @@
+# Protection adaptée à un CV statique servi par Apache 2.4.
+ServerSignature Off
+Options -Indexes
+DirectoryIndex index.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Interdit l'accès aux répertoires cachés et aux sources du générateur.
+  RewriteRule "(^|/)\.(?!well-known(?:/|$))" - [F,L]
+  RewriteRule "^(?:scripts|templates)(?:/|$)" - [F,L,NC]
+</IfModule>
+
+# Ces fichiers servent à construire le CV mais ne doivent pas être publiés.
+<FilesMatch "(?:^Makefile$|^requirements\.txt$|^styles-critical\.css$|\.(?:ya?ml|py|sh|md|ini|log)$)">
+  Require all denied
+</FilesMatch>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set X-Permitted-Cross-Domain-Policies "none"
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.google-analytics.com; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com; font-src 'self'; upgrade-insecure-requests"
+  Header always set Strict-Transport-Security "max-age=31536000" "expr=%{HTTPS} == 'on'"
+
+  <FilesMatch "(?i:\.(?:svg|jpe?g|webp|avif))$">
+    Header set Cache-Control "public, max-age=2592000, stale-while-revalidate=86400"
+  </FilesMatch>
+
+  # Les PDF restent téléchargeables, mais les moteurs ne doivent pas les indexer.
+  <FilesMatch "(?i:\.pdf)$">
+    Header always set X-Robots-Tag "noindex, noarchive, nosnippet"
+  </FilesMatch>
+</IfModule>

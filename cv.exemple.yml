@@ -1,0 +1,119 @@
+meta:
+  updated: 2026-08
+  canonical_url: https://cv.example.com/
+  pdf_filename: camille-martin-cv.pdf
+  pdf_pages: 1
+  description: >-
+    CV de {name}, spécialiste des systèmes et du cloud avec plus de
+    {experience_years} ans d'expérience.
+  language: fr
+  theme: blue
+  analytics_id: G-XXXXXXXXXX
+
+person:
+  first_name: Camille
+  last_name: Martin
+  birth_date: 1990-04-12
+  show_age: false
+  show_qr_code: false
+  title: Ingénieure systèmes, cloud & automatisation
+  professional_title: Ingénieure systèmes et cloud
+  eyebrow: Consultante indépendante
+  location: Nantes
+  region: Pays de la Loire
+  postal_code: "44000"
+  country: France
+  country_code: FR
+  driving_licence: Permis B
+  availability: Ouvert aux opportunités
+  availability_period: sous 1 mois
+  email: camille.martin@example.com
+  phone_display: ""
+  phone_uri: ""
+  photo: assets/portrait-placeholder.svg
+  appointment_url: https://example.com/rendez-vous
+  appointment_description: Choisir un créneau de rendez-vous
+  profiles:
+    - network: LinkedIn
+      username: camille-martin-example
+      url: https://www.linkedin.com/in/camille-martin-example
+
+profile:
+  experience_since: 2012
+  objective_title: Profil recherché
+  objective_label: Missions de conseil
+  tags: [Linux, Cloud, Automatisation, Fiabilité]
+  summary: >-
+    Ingénieure disposant de plus de {experience_years} ans d'expérience dans
+    l'exploitation, l'automatisation et la modernisation d'infrastructures.
+    Habituée aux environnements exigeants et aux équipes pluridisciplinaires.
+  specialties: [Architecture cloud, Linux, Kubernetes, Automatisation, SRE]
+  approach: >-
+    Approche pragmatique : fiabiliser les services, automatiser les opérations
+    répétitives et transmettre les connaissances aux équipes.
+  clearance: Aucune habilitation particulière requise.
+
+experiences:
+  - company: Entreprise Alpha
+    position: Ingénieure cloud senior
+    type: CDI
+    location: Nantes
+    start: 2021-03
+    end: present
+    highlights:
+      - Conception et exploitation de plateformes Kubernetes pour des applications métier.
+      - Automatisation des déploiements avec Terraform, Ansible et GitLab CI/CD.
+      - Mise en place d'indicateurs de fiabilité et accompagnement des équipes de développement.
+  - company: Société Beta
+    position: Administratrice systèmes Linux
+    type: CDI
+    location: Rennes
+    start: 2016-01
+    end: 2021-02
+    highlights:
+      - Administration de serveurs Linux et industrialisation des opérations courantes.
+      - Amélioration de la supervision, de la sauvegarde et des procédures de reprise.
+  - company: Groupe Gamma
+    position: Technicienne systèmes et réseaux
+    type: CDI
+    location: Angers
+    start: "2012"
+    end: "2015"
+    compact: true
+    summary: Support, administration Windows et Linux, réseau et gestion du parc informatique.
+
+skills:
+  - name: Systèmes
+    keywords: [Linux, Debian, Ubuntu, Red Hat Enterprise Linux, Windows Server]
+  - name: Cloud & conteneurs
+    keywords: [AWS, Kubernetes, Docker, Helm, VMware]
+  - name: Automatisation
+    keywords: [Ansible, Terraform, GitLab CI/CD, Python, Bash]
+  - name: Observabilité
+    keywords: [Prometheus, Grafana, Elastic Stack, Centreon]
+  - name: Données
+    keywords: [PostgreSQL, MySQL, Redis, Veeam]
+
+certifications:
+  - name: Certification cloud fictive
+    issuer: Organisme Exemple
+    date: "2025"
+    url: https://example.com/certification
+
+education:
+  - degree: Diplôme d'ingénieur informatique
+    institution: École Exemple
+    start: "2007"
+    end: "2012"
+
+languages:
+  - language: Français
+    level: langue maternelle
+  - language: Anglais
+    level: professionnel, C1
+
+interests:
+  - name: Logiciels libres
+    details: Contribution à des projets communautaires et veille technique.
+  - name: Activités personnelles
+    details: Randonnée, photographie et musique.

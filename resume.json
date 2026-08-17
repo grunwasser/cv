@@ -1,0 +1,151 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/master/schema.json",
+  "basics": {
+    "name": "Camille Martin",
+    "label": "Ingénieure systèmes et cloud",
+    "image": "assets/portrait-placeholder.svg",
+    "email": "camille.martin@example.com",
+    "url": "https://cv.example.com/",
+    "summary": "Ingénieure disposant de plus de 14 ans d'expérience dans l'exploitation, l'automatisation et la modernisation d'infrastructures. Habituée aux environnements exigeants et aux équipes pluridisciplinaires. Approche pragmatique : fiabiliser les services, automatiser les opérations répétitives et transmettre les connaissances aux équipes. Aucune habilitation particulière requise.",
+    "location": {
+      "postalCode": "44000",
+      "city": "Nantes",
+      "region": "Pays de la Loire",
+      "countryCode": "FR"
+    },
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "camille-martin-example",
+        "url": "https://www.linkedin.com/in/camille-martin-example"
+      }
+    ],
+    "availability": {
+      "status": "Ouvert aux opportunités",
+      "period": "sous 1 mois"
+    }
+  },
+  "work": [
+    {
+      "name": "Entreprise Alpha",
+      "position": "Ingénieure cloud senior",
+      "location": "Nantes",
+      "startDate": "2021-03",
+      "endDate": "",
+      "highlights": [
+        "Conception et exploitation de plateformes Kubernetes pour des applications métier.",
+        "Automatisation des déploiements avec Terraform, Ansible et GitLab CI/CD.",
+        "Mise en place d'indicateurs de fiabilité et accompagnement des équipes de développement."
+      ]
+    },
+    {
+      "name": "Société Beta",
+      "position": "Administratrice systèmes Linux",
+      "location": "Rennes",
+      "startDate": "2016-01",
+      "endDate": "2021-02",
+      "highlights": [
+        "Administration de serveurs Linux et industrialisation des opérations courantes.",
+        "Amélioration de la supervision, de la sauvegarde et des procédures de reprise."
+      ]
+    },
+    {
+      "name": "Groupe Gamma",
+      "position": "Technicienne systèmes et réseaux",
+      "location": "Angers",
+      "startDate": "2012",
+      "endDate": "2015",
+      "summary": "Support, administration Windows et Linux, réseau et gestion du parc informatique."
+    }
+  ],
+  "education": [
+    {
+      "institution": "École Exemple",
+      "area": "Diplôme d'ingénieur informatique",
+      "startDate": "2007",
+      "endDate": "2012"
+    }
+  ],
+  "certificates": [
+    {
+      "name": "Certification cloud fictive",
+      "date": "2025",
+      "issuer": "Organisme Exemple",
+      "url": "https://example.com/certification"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Systèmes",
+      "keywords": [
+        "Linux",
+        "Debian",
+        "Ubuntu",
+        "Red Hat Enterprise Linux",
+        "Windows Server"
+      ]
+    },
+    {
+      "name": "Cloud & conteneurs",
+      "keywords": [
+        "AWS",
+        "Kubernetes",
+        "Docker",
+        "Helm",
+        "VMware"
+      ]
+    },
+    {
+      "name": "Automatisation",
+      "keywords": [
+        "Ansible",
+        "Terraform",
+        "GitLab CI/CD",
+        "Python",
+        "Bash"
+      ]
+    },
+    {
+      "name": "Observabilité",
+      "keywords": [
+        "Prometheus",
+        "Grafana",
+        "Elastic Stack",
+        "Centreon"
+      ]
+    },
+    {
+      "name": "Données",
+      "keywords": [
+        "PostgreSQL",
+        "MySQL",
+        "Redis",
+        "Veeam"
+      ]
+    }
+  ],
+  "languages": [
+    {
+      "language": "Français",
+      "fluency": "langue maternelle"
+    },
+    {
+      "language": "Anglais",
+      "fluency": "professionnel, C1"
+    }
+  ],
+  "interests": [
+    {
+      "name": "Logiciels libres",
+      "keywords": [
+        "Contribution à des projets communautaires et veille technique."
+      ]
+    },
+    {
+      "name": "Activités personnelles",
+      "keywords": [
+        "Randonnée, photographie et musique."
+      ]
+    }
+  ]
+}

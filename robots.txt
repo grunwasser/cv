@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Ressources structurées pour agents et ATS
+# Les ressources llms.txt et resume.json sont placées à côté de index.html.

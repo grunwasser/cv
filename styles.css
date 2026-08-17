@@ -1,0 +1,91 @@
+.job { padding:0 0 1.55rem 1.25rem; margin:0 0 1.55rem; border-left:3px solid var(--cyan); border-bottom:1px solid var(--line); }
+.job:last-child { border-bottom:0; }
+.job header { display:flex; justify-content:space-between; gap:20px; align-items:flex-start; }
+.company,.date { margin:.25rem 0; color:var(--muted); }
+.date { flex:0 0 auto; font-size:.9rem; font-weight:700; }
+.job ul { margin:.8rem 0; padding-left:1.2rem; }
+.job li { margin:.35rem 0; }
+.clients { font-size:.92rem; }
+.earlier summary { margin-bottom:1.4rem; color:var(--heading); cursor:pointer; font-weight:700; }
+.compact { padding-bottom:1rem; margin-bottom:1rem; }
+.compact p { margin:.6rem 0 0; }
+.skills { margin:0; }
+.skills div { padding:.85rem 0; border-bottom:1px solid var(--line); }
+.skills div:first-child { padding-top:0; }
+.skills div:last-child { border-bottom:0; }
+.skills dt { color:var(--heading); font-weight:800; }
+.skills dd { margin:.2rem 0 0; color:var(--muted); }
+.credential { margin-bottom:1rem; }
+.credential p,#formation p { margin:.25rem 0 1rem; color:var(--muted); }
+.plain { padding-left:1.2rem; }
+.contact-dialog { width:min(520px,calc(100% - 32px)); padding:0; color:var(--ink); background:var(--paper); border:0; border-radius:var(--radius); box-shadow:0 24px 80px rgba(0,0,0,.3); }
+.contact-dialog::backdrop { background:rgba(8,27,43,.72); backdrop-filter:blur(3px); }
+.dialog-header { display:flex; align-items:center; justify-content:space-between; padding:1.1rem 1.3rem; color:#fff; background:var(--navy); border-top:4px solid var(--cyan); }
+.dialog-header h2 { margin:0; padding:0; color:#fff; border:0; font-size:1.15rem; }
+.dialog-header h2::after { display:none; }
+.dialog-close { width:2rem; height:2rem; padding:0; color:#fff; background:transparent; border:0; border-radius:50%; font:inherit; font-size:1.8rem; line-height:1; cursor:pointer; }
+.dialog-close:hover,.dialog-close:focus-visible { background:rgba(255,255,255,.15); }
+.dialog-body { display:grid; gap:.7rem; padding:1.3rem; }
+.contact-item { display:grid; grid-template-columns:2.2rem 1fr; gap:.7rem; align-items:center; padding:.85rem; color:var(--ink); border:1px solid var(--line); border-radius:7px; text-decoration:none; }
+.contact-item:hover { color:var(--heading); border-color:var(--cyan); background:var(--wash); }
+.contact-item > span:first-child { color:var(--cyan); font-size:1.35rem; font-weight:800; text-align:center; }
+.contact-item strong { display:block; color:var(--heading); font-size:.82rem; text-transform:uppercase; letter-spacing:.04em; }
+footer { padding:24px; color:#c9d7e0; text-align:center; background:var(--navy); }
+footer a { color:#fff; }
+@media (max-width:560px) { .job header { display:block; } .date { margin-top:.4rem; } .contact-dialog { max-height:calc(100dvh - 24px); } .dialog-body { padding:1rem; } .contact-item { overflow-wrap:anywhere; } }
+@media (pointer:coarse) { .dialog-close,.contact-item { min-height:44px; } }
+@media print {
+  @page { size:A4 portrait; margin:8mm; background:#fff; }
+  html[data-theme] { color-scheme:light; --navy:#111; --navy-2:#222; --heading:#111; --cyan:#555; --accent-hover:#777; --link:#111; --button-ink:#111; --ink:#111; --muted:#444; --paper:#fff; --wash:#fff; --line:#bbb; background:#fff; }
+  body { color:#111; background:#fff; font-size:8.5pt; line-height:1.23; }
+  .hero { color:#111; background:#fff; border-top:4px solid var(--cyan); }
+  .hero-inner { width:100%; grid-template-columns:72px 1fr; gap:12px; padding:5px 0; }
+  .portrait-wrap { width:68px;height:68px; }
+  .portrait { border:0; filter:grayscale(1) brightness(1.1); }
+  h1 { font-size:23pt; color:var(--navy); }
+  h2,h3,.skills dt { color:var(--navy); }
+  .role { font-size:12pt; }
+  .eyebrow,.contact-card,.contact-card a,.contact-opener { color:#222; }
+  .contact-card { grid-column:1/-1; padding:4px 0 0 8px; background:none; border-left:2px solid var(--cyan); }
+  .contact-card > :not(.print-contact) { display:none; }
+  .print-contact { display:grid; grid-template-columns:1fr 25mm; gap:6mm; align-items:center; }
+  .print-contact.without-qr { grid-template-columns:1fr; }
+  .print-contact-details { display:grid; grid-template-columns:minmax(38mm,.8fr) minmax(80mm,1.7fr); gap:2px 8mm; align-items:start; }
+  .print-contact p { margin:0 0 1px; font-size:8pt; line-height:1.2; }
+  .print-contact-title { grid-column:1/-1; color:var(--navy); font-size:9.5pt!important; text-transform:uppercase; letter-spacing:.04em; }
+  .print-contact-personal { padding-top:1px; }
+  .print-contact-links { margin:0; }
+  .print-contact-links div { display:grid; grid-template-columns:20mm 1fr; gap:2mm; }
+  .print-contact-links dt { color:#666; font-size:7pt; font-weight:700; line-height:1.55; text-transform:uppercase; }
+  .print-contact-links dd { margin:0; font-size:8pt; line-height:1.2; }
+  .print-qr { text-align:center; }
+  .print-qr img { display:block; width:24mm; height:24mm; margin:0 auto 1px; }
+  .print-qr span { display:block; color:#666; font-size:6.5pt; font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
+  .pill-list { flex-wrap:nowrap; gap:3px; }
+  .pill-list li { padding:1px 4px; border-color:#777; font-size:7pt; white-space:nowrap; }
+  .main-nav,.print-button,.contact-dialog,.theme-settings,.skip-link,footer { display:none; }
+  .layout { width:100%; margin:2px 0; display:block; }
+  section { margin:0 0 5px; padding:0; background:#fff; box-shadow:none; break-inside:auto; }
+  .specialties { color:var(--navy); background:#fff; }
+  .company,.date,.credential p,#formation p,.skills dd { color:#444; }
+  h2 { margin:5px 0 3px; font-size:11pt; break-after:avoid; }
+  h3 { font-size:9.3pt; }
+  .job,.skills div,.credential { break-inside:avoid; }
+  .job { padding:0 0 3px 7px; margin:0 0 3px; }
+  .job ul { margin:2px 0; }
+  .job li { margin:1px 0; }
+  .compact { padding-bottom:2px; margin-bottom:2px; }
+  .compact p { margin:2px 0 0; }
+  .side-column { display:block; }
+  .side-column section { margin-bottom:4px; }
+  .skills { display:grid; grid-template-columns:1fr 1fr; gap:0 6mm; }
+  .skills div { display:block; padding:2px 0; break-inside:avoid; }
+  .skills dd { margin:0; }
+  .credential { margin-bottom:4px; }
+  .credential p,#formation p { margin:1px 0 4px; }
+  .plain { margin:2px 0; }
+  .side-column section:last-child p { margin:2px 0; }
+  a { color:inherit; text-decoration:none; }
+  details > summary { display:none; }
+  details > * { display:block; }
+}

@@ -1,0 +1,50 @@
+# Camille Martin — CV
+
+> Ingénieure systèmes et cloud, basé à Nantes. Plus de 14 ans d’expérience.
+
+## Profil recherché
+Missions de conseil : Architecture cloud, Linux, Kubernetes, Automatisation, SRE.
+
+## Compétences clés
+- Systèmes : Linux, Debian, Ubuntu, Red Hat Enterprise Linux, Windows Server
+- Cloud & conteneurs : AWS, Kubernetes, Docker, Helm, VMware
+- Automatisation : Ansible, Terraform, GitLab CI/CD, Python, Bash
+- Observabilité : Prometheus, Grafana, Elastic Stack, Centreon
+- Données : PostgreSQL, MySQL, Redis, Veeam
+
+Approche pragmatique : fiabiliser les services, automatiser les opérations répétitives et transmettre les connaissances aux équipes.
+Aucune habilitation particulière requise.
+
+## Expérience
+- Mars 2021–aujourd’hui : Ingénieure cloud senior, Entreprise Alpha, Nantes.
+  - Conception et exploitation de plateformes Kubernetes pour des applications métier.
+  - Automatisation des déploiements avec Terraform, Ansible et GitLab CI/CD.
+  - Mise en place d'indicateurs de fiabilité et accompagnement des équipes de développement.
+- Janvier 2016–février 2021 : Administratrice systèmes Linux, Société Beta, Rennes.
+  - Administration de serveurs Linux et industrialisation des opérations courantes.
+  - Amélioration de la supervision, de la sauvegarde et des procédures de reprise.
+- 2012–2015 : Technicienne systèmes et réseaux, Groupe Gamma, Angers.
+  - Support, administration Windows et Linux, réseau et gestion du parc informatique.
+
+## Certifications & formation continue
+- [Certification cloud fictive](https://example.com/certification), 2025
+
+## Formation
+- Diplôme d'ingénieur informatique, École Exemple, 2007–2012
+
+## Langues
+- Français : langue maternelle
+- Anglais : professionnel, C1
+
+## Centres d’intérêt
+- Logiciels libres : Contribution à des projets communautaires et veille technique.
+- Activités personnelles : Randonnée, photographie et musique.
+
+## Contact
+- Statut : Ouvert aux opportunités
+- Disponibilité : sous 1 mois
+- E-mail : camille.martin@example.com
+- [Prendre rendez-vous](https://example.com/rendez-vous)
+- [LinkedIn](https://www.linkedin.com/in/camille-martin-example)
+- [CV HTML](https://cv.example.com/)
+- [Données JSON](https://cv.example.com/resume.json)

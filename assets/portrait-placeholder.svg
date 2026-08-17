@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360" role="img" aria-labelledby="title desc">
+  <title id="title">Portrait générique</title>
+  <desc id="desc">Silhouette neutre sur fond clair</desc>
+  <rect width="360" height="360" rx="180" fill="#e5eaed"/>
+  <circle cx="180" cy="132" r="68" fill="#71808d"/>
+  <path d="M70 326c9-79 53-124 110-124s101 45 110 124" fill="#71808d"/>
+</svg>

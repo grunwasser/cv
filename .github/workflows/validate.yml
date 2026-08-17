@@ -1,0 +1,23 @@
+name: Validate CV
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare example configuration
+        run: cp cv.exemple.yml cv.yml
+      - name: Install validation tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qrencode
+          python3 -m pip install -r requirements.txt
+          python3 -m playwright install --with-deps chromium
+      - name: Validate HTML, responsive layouts and PDF
+        env:
+          REQUIRE_BROWSER_CHECKS: "1"
+        run: make update

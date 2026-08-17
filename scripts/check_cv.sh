@@ -13,6 +13,7 @@ from html.parser import HTMLParser
 import json
 from pathlib import Path
 import re
+import xml.etree.ElementTree as ET
 import yaml
 
 class Audit(HTMLParser):
@@ -48,11 +49,14 @@ htaccess = Path(".htaccess").read_text(encoding="utf-8")
 source = yaml.safe_load(Path("cv.yml").read_text(encoding="utf-8"))
 resume = json.loads(Path("resume.json").read_text(encoding="utf-8"))
 llms = Path("llms.txt").read_text(encoding="utf-8")
+robots = Path("robots.txt").read_text(encoding="utf-8")
+sitemap = ET.parse("sitemap.xml").getroot()
 audit = Audit()
 audit.feed(html)
 json_ld_match = re.search(r'<script type="application/ld\+json">\s*(.*?)\s*</script>', html, re.DOTALL)
 assert json_ld_match, "Données JSON-LD absentes"
 json_ld = json.loads(json_ld_match.group(1))
+person_ld = json_ld.get("mainEntity", {})
 
 implementation_paths = [Path("Makefile"), *Path("scripts").glob("*"), *Path("templates").glob("*")]
 implementation = "\n".join(
@@ -81,6 +85,19 @@ assert f"plus de {expected_experience} ans" in html.lower(), "Accroche d'expéri
 canonical_url = source["meta"]["canonical_url"]
 assert f'rel="canonical" href="{canonical_url}"' in html, "URL canonique absolue absente"
 assert f'property="og:url" content="{canonical_url}"' in html, "URL Open Graph incohérente"
+assert json_ld.get("@type") == "ProfilePage", "Le JSON-LD doit décrire une ProfilePage"
+assert json_ld.get("url") == canonical_url, "URL ProfilePage incohérente"
+assert json_ld.get("dateModified") == f'{source["meta"]["updated"]}-01', "Date ProfilePage incohérente"
+assert person_ld.get("@type") == "Person", "Entité Person absente de la ProfilePage"
+assert person_ld.get("@id") == f"{canonical_url}#person", "Identifiant de la Person incohérent"
+assert person_ld.get("hasOccupation", {}).get("name") == source["person"]["title"], "Métier JSON-LD incohérent"
+namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+assert sitemap.tag == f'{{{namespace["sm"]}}}urlset', "Racine sitemap.xml invalide"
+assert sitemap.findtext("sm:url/sm:loc", namespaces=namespace) == canonical_url, "URL du sitemap incohérente"
+assert sitemap.findtext("sm:url/sm:lastmod", namespaces=namespace) == f'{source["meta"]["updated"]}-01', "Date du sitemap incohérente"
+assert "User-agent: OAI-SearchBot\nAllow: /" in robots, "OAI-SearchBot doit être autorisé"
+assert "User-agent: GPTBot\nDisallow: /" in robots, "GPTBot doit être bloqué"
+assert f"Sitemap: {canonical_url}sitemap.xml" in robots, "Sitemap absent de robots.txt"
 assert "?v=" not in html, "Paramètre de version inutile détecté dans les ressources"
 assert '<link rel="preload" href="styles.css" as="style">' in html, "Préchargement CSS absent"
 assert 'data-deferred-styles' in html, "Chargement CSS différé absent"
@@ -96,10 +113,9 @@ if Path(source["person"]["photo"]).suffix.lower() != ".svg":
 birth_date = source["person"]["birth_date"].isoformat()
 if source["person"].get("show_age", True):
     assert html.count(f'datetime="{birth_date}" data-age') == 2, "Date de naissance non centralisée dans les affichages de l'âge"
-    assert json_ld.get("birthDate") == birth_date, "Date de naissance absente des données structurées"
+    assert person_ld.get("birthDate") == birth_date, "Date de naissance absente des données structurées"
 else:
-    assert birth_date not in html and "birthDate" not in json_ld, "Date de naissance présente alors que l'âge est masqué"
-assert json_ld.get("url") == source["meta"]["canonical_url"], "URL JSON-LD incohérente"
+    assert birth_date not in html and "birthDate" not in person_ld, "Date de naissance présente alors que l'âge est masqué"
 assert '<details class="earlier">' in html, "Les expériences antérieures doivent être repliées par défaut"
 assert html.count('<article class="job') == len(source["experiences"]), "Expériences HTML incomplètes"
 assert len(resume["work"]) == len(source["experiences"]), "Expériences JSON incomplètes"
@@ -107,7 +123,7 @@ for value in filter(None, (source["person"]["email"], source["person"].get("phon
     assert value in html and value in llms, f"Coordonnée désynchronisée : {value}"
 if not source["person"].get("phone_display"):
     assert "Téléphone" not in html and "Téléphone" not in llms, "Téléphone présent alors qu'il est désactivé"
-    assert "phone" not in resume["basics"] and "telephone" not in json_ld, "Téléphone présent dans les données structurées"
+    assert "phone" not in resume["basics"] and "telephone" not in person_ld, "Téléphone présent dans les données structurées"
 availability = str(source["person"].get("availability") or "")
 availability_period = str(source["person"].get("availability_period") or "")
 if availability or availability_period:

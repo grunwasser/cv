@@ -1,5 +1,11 @@
+# Autorise l'indexation dans ChatGPT Search sans autoriser l'entraînement.
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Disallow: /
+
 User-agent: *
 Allow: /
 
-# Ressources structurées pour agents et ATS
-# Les ressources llms.txt et resume.json sont placées à côté de index.html.
+Sitemap: https://cv.example.com/sitemap.xml

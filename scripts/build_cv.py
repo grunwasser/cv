@@ -198,14 +198,19 @@ def build_head(data: dict) -> str:
     person, profile = data["person"], data["profile"]
     name = f'{person["first_name"]} {person["last_name"]}'
     description = data["meta"]["description"].format(name=name, experience_years=experience_years(data))
-    json_ld = {
-        "@context": "https://schema.org",
+    canonical_url = data["meta"]["canonical_url"]
+    person_entity = {
         "@type": "Person",
+        "@id": f"{canonical_url}#person",
         "name": name,
         "givenName": person["first_name"],
         "familyName": person["last_name"],
-        "url": data["meta"]["canonical_url"],
+        "url": canonical_url,
         "jobTitle": person["professional_title"],
+        "hasOccupation": {
+            "@type": "Occupation",
+            "name": person["title"],
+        },
         "email": f'mailto:{person["email"]}',
         "address": {
             "@type": "PostalAddress", "addressLocality": person["location"],
@@ -219,11 +224,19 @@ def build_head(data: dict) -> str:
         "knowsAbout": profile["specialties"] + [item["name"] for item in data["skills"]],
     }
     if person.get("show_age", True):
-        json_ld["birthDate"] = iso_date(person["birth_date"])
+        person_entity["birthDate"] = iso_date(person["birth_date"])
     if person.get("phone_uri"):
-        json_ld["telephone"] = person["phone_uri"]
+        person_entity["telephone"] = person["phone_uri"]
     title = f'{name} — {person["title"]}'
-    canonical_url = data["meta"]["canonical_url"]
+    json_ld = {
+        "@context": "https://schema.org",
+        "@type": "ProfilePage",
+        "@id": f"{canonical_url}#profile",
+        "url": canonical_url,
+        "name": title,
+        "dateModified": sitemap_date(data),
+        "mainEntity": person_entity,
+    }
     analytics_id = h(data["meta"]["analytics_id"])
     critical_css = indent((ROOT / "styles-critical.css").read_text(encoding="utf-8").strip(), "    ")
     return f'''  <meta charset="utf-8">
@@ -593,6 +606,39 @@ def build_llms(data: dict) -> str:
     return "\n".join(lines)
 
 
+def sitemap_date(data: dict) -> str:
+    """Convertit la précision mensuelle du CV en date XML déterministe."""
+    return f'{data["meta"]["updated"]}-01'
+
+
+def build_sitemap(data: dict) -> str:
+    canonical_url = h(data["meta"]["canonical_url"])
+    return f'''<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>{canonical_url}</loc>
+    <lastmod>{sitemap_date(data)}</lastmod>
+  </url>
+</urlset>
+'''
+
+
+def build_robots(data: dict) -> str:
+    sitemap_url = urljoin(data["meta"]["canonical_url"], "sitemap.xml")
+    return f'''# Autorise l'indexation dans ChatGPT Search sans autoriser l'entraînement.
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: *
+Allow: /
+
+Sitemap: {sitemap_url}
+'''
+
+
 def period_plain(item: dict) -> str:
     start, end = display_date(item.get("start"), start=True), display_date(item.get("end"))
     if not start:
@@ -652,6 +698,8 @@ def main() -> None:
         ROOT / "index.html": build_html(data, template),
         ROOT / "resume.json": json.dumps(build_resume(data), ensure_ascii=False, indent=2) + "\n",
         ROOT / "llms.txt": build_llms(data),
+        ROOT / "robots.txt": build_robots(data),
+        ROOT / "sitemap.xml": build_sitemap(data),
     }
     if data["person"].get("show_qr_code", False):
         generated[qr_path] = render_qr(build_vcard(data))

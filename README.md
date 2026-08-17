@@ -24,6 +24,8 @@ Cette commande régénère et contrôle automatiquement :
 - `index.html` : version web responsive et version imprimable ;
 - `resume.json` : version structurée compatible JSON Resume ;
 - `llms.txt` : version textuelle pour les agents IA ;
+- `robots.txt` : règles d'exploration, avec ChatGPT Search autorisé et GPTBot bloqué ;
+- `sitemap.xml` : URL canonique et date de mise à jour pour les moteurs de recherche ;
 - `assets/cv-qr.svg` : QR code optionnel contenant la vCard ;
 - le fichier défini par `meta.pdf_filename` : PDF A4 directement téléchargeable depuis le site.
 

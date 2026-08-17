@@ -39,27 +39,27 @@ footer a { color:#fff; }
   html[data-theme] { color-scheme:light; --navy:#111; --navy-2:#222; --heading:#111; --cyan:#555; --accent-hover:#777; --link:#111; --button-ink:#111; --ink:#111; --muted:#444; --paper:#fff; --wash:#fff; --line:#bbb; background:#fff; }
   body { color:#111; background:#fff; font-size:8.5pt; line-height:1.23; }
   .hero { color:#111; background:#fff; border-top:4px solid var(--cyan); }
-  .hero-inner { width:100%; grid-template-columns:72px 1fr; gap:12px; padding:5px 0; }
-  .portrait-wrap { width:68px;height:68px; }
+  .hero-inner { width:100%; grid-template-columns:62px minmax(0,1fr) 78mm; gap:10px; align-items:start; padding:5px 0; }
+  .portrait-wrap { width:58px;height:58px; }
   .portrait { border:0; filter:grayscale(1) brightness(1.1); }
   h1 { font-size:23pt; color:var(--navy); }
   h2,h3,.skills dt { color:var(--navy); }
   .role { font-size:12pt; }
   .eyebrow,.contact-card,.contact-card a,.contact-opener { color:#222; }
-  .contact-card { grid-column:1/-1; padding:4px 0 0 8px; background:none; border-left:2px solid var(--cyan); }
+  .contact-card { grid-column:3; grid-row:1; padding:0 0 0 5px; background:none; border-left:2px solid var(--cyan); }
   .contact-card > :not(.print-contact) { display:none; }
-  .print-contact { display:grid; grid-template-columns:1fr 25mm; gap:6mm; align-items:center; }
+  .print-contact { display:grid; grid-template-columns:1fr 22mm; gap:3mm; align-items:start; }
   .print-contact.without-qr { grid-template-columns:1fr; }
-  .print-contact-details { display:grid; grid-template-columns:minmax(38mm,.8fr) minmax(80mm,1.7fr); gap:2px 8mm; align-items:start; }
-  .print-contact p { margin:0 0 1px; font-size:8pt; line-height:1.2; }
-  .print-contact-title { grid-column:1/-1; color:var(--navy); font-size:9.5pt!important; text-transform:uppercase; letter-spacing:.04em; }
-  .print-contact-personal { padding-top:1px; }
+  .print-contact-details { display:block; min-width:0; }
+  .print-contact p { margin:0 0 1px; font-size:7pt; line-height:1.15; }
+  .print-contact-title { color:var(--navy); font-size:8pt!important; text-transform:uppercase; letter-spacing:.04em; }
+  .print-contact-personal { margin-bottom:2px; }
   .print-contact-links { margin:0; }
-  .print-contact-links div { display:grid; grid-template-columns:20mm 1fr; gap:2mm; }
-  .print-contact-links dt { color:#666; font-size:7pt; font-weight:700; line-height:1.55; text-transform:uppercase; }
-  .print-contact-links dd { margin:0; font-size:8pt; line-height:1.2; }
+  .print-contact-links div { display:grid; grid-template-columns:17mm minmax(0,1fr); gap:1.5mm; }
+  .print-contact-links dt { color:#666; font-size:6.5pt; font-weight:700; line-height:1.3; text-transform:uppercase; }
+  .print-contact-links dd { min-width:0; margin:0; overflow-wrap:anywhere; font-size:7pt; line-height:1.15; }
   .print-qr { text-align:center; }
-  .print-qr img { display:block; width:24mm; height:24mm; margin:0 auto 1px; }
+  .print-qr img { display:block; width:21mm; height:21mm; margin:0 auto 1px; }
   .print-qr span { display:block; color:#666; font-size:6.5pt; font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
   .pill-list { flex-wrap:nowrap; gap:3px; }
   .pill-list li { padding:1px 4px; border-color:#777; font-size:7pt; white-space:nowrap; }

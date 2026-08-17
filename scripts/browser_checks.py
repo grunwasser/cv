@@ -234,7 +234,7 @@ def check_pdf(path: Path) -> int:
             raise AssertionError(f"contenu absent du PDF : {value}")
 
     qr_expected = "assets/cv-qr.svg" in (ROOT / "index.html").read_text(encoding="utf-8")
-    if qr_expected != ("AJOUTER LE CONTACT" in extracted):
+    if qr_expected != ("AJOUTER LE CONTACT" in " ".join(extracted.split())):
         raise AssertionError("état du QR code incohérent entre le HTML et le PDF")
 
     link_targets = []

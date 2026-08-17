@@ -332,9 +332,9 @@ def build_header(data: dict) -> str:
         availability_html = f'        <p class="availability {availability_class}"><span class="availability-dot" aria-hidden="true"></span><span class="availability-copy">{"".join(availability_parts)}</span></p>\n'
     print_availability = ""
     if availability:
-        print_availability += f'              <p><strong>Statut :</strong> {h(availability)}</p>\n'
+        print_availability += f'              <div><dt>Statut</dt><dd>{h(availability)}</dd></div>\n'
     if availability_period:
-        print_availability += f'              <p><strong>Disponibilité :</strong> {h(availability_period)}</p>\n'
+        print_availability += f'              <div><dt>Disponibilité</dt><dd>{h(availability_period)}</dd></div>\n'
     print_phone = ""
     if person.get("phone_uri"):
         print_phone = f'              <div><dt>Téléphone</dt><dd><a href="tel:{h(person["phone_uri"])}">{h(person["phone_display"])}</a></dd></div>\n'
@@ -393,11 +393,12 @@ def build_header(data: dict) -> str:
             <div class="print-contact-personal">
               <p>{h(person['location'])} ({h(person['postal_code'])}), {h(person['country'])}</p>
               <p>{personal_details}</p>
-{print_availability}            </div>
+            </div>
             <dl class="print-contact-links">
               <div><dt>E-mail</dt><dd><a href="mailto:{h(person['email'])}">{h(person['email'])}</a></dd></div>
 {print_phone}              <div><dt>CV en ligne</dt><dd><a href="{h(data['meta']['canonical_url'])}">{h(data['meta']['canonical_url'].removeprefix('https://').rstrip('/'))}</a></dd></div>
 {print_profiles}
+{print_availability}
             </dl>
           </div>
 {print_qr}        </div>

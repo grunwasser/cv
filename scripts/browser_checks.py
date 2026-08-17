@@ -252,6 +252,14 @@ def check_pdf(path: Path) -> int:
             raise AssertionError(f'profil absent du PDF : {profile["network"]}')
         if profile["url"] not in link_targets:
             raise AssertionError(f'lien de profil non cliquable dans le PDF : {profile["network"]}')
+    if person.get("availability") and person["profiles"]:
+        extracted_folded = extracted.casefold()
+        last_profile = max(extracted_folded.find(profile["network"].casefold()) for profile in person["profiles"])
+        status_position = extracted_folded.find("statut", last_profile)
+        if status_position < last_profile:
+            raise AssertionError("le statut doit apparaître après les profils dans le PDF")
+        if person.get("availability_period") and extracted_folded.find("disponibilité", status_position) < status_position:
+            raise AssertionError("la disponibilité doit apparaître après le statut dans le PDF")
 
     ordered = ("COMPÉTENCES TECHNIQUES", "CERTIFICATIONS", "FORMATION", "LANGUES", "CENTRES D’INTÉRÊT")
     positions = [extracted.find(section) for section in ordered]

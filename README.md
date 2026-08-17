@@ -29,6 +29,9 @@ Cette commande régénère et contrôle automatiquement :
 - `assets/cv-qr.svg` : QR code optionnel contenant la vCard ;
 - le fichier défini par `meta.pdf_filename` : PDF A4 directement téléchargeable depuis le site.
 
+Les profils déclarés dans `person.profiles` sont affichés avec leur pictogramme sur
+le site et avec leur identifiant et un lien cliquable dans les coordonnées du PDF.
+
 Ne pas modifier directement ces fichiers générés : leurs changements seraient remplacés à la prochaine génération. Le fichier `cv.yml` est ignoré par Git pour éviter de publier accidentellement les données personnelles ; seul le modèle entièrement fictif est versionné.
 
 Le premier écran est stylé par `styles-critical.css`, automatiquement intégré dans `index.html`. Le reste de la mise en page est chargé sans bloquer le rendu depuis `styles.css`. Toute modification des couleurs ou de l’en-tête doit donc être faite dans `styles-critical.css`.

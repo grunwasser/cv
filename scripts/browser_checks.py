@@ -246,6 +246,12 @@ def check_pdf(path: Path) -> int:
                 link_targets.append(action["/URI"])
     if SOURCE_DATA["meta"]["canonical_url"] not in link_targets:
         raise AssertionError("le lien vers le CV en ligne n'est pas cliquable dans le PDF")
+    for profile in person["profiles"]:
+        label = profile.get("username") or profile["url"].removeprefix("https://").removeprefix("www.")
+        if profile["network"].casefold() not in extracted.casefold() or label not in extracted:
+            raise AssertionError(f'profil absent du PDF : {profile["network"]}')
+        if profile["url"] not in link_targets:
+            raise AssertionError(f'lien de profil non cliquable dans le PDF : {profile["network"]}')
 
     ordered = ("COMPÉTENCES TECHNIQUES", "CERTIFICATIONS", "FORMATION", "LANGUES", "CENTRES D’INTÉRÊT")
     positions = [extracted.find(section) for section in ordered]

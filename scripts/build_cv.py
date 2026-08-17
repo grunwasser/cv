@@ -56,6 +56,11 @@ def validate_data(data: dict) -> None:
     allowed_availability = {None, "", "En recherche active", "Ouvert aux opportunités", "Non disponible actuellement"}
     if person.get("availability") not in allowed_availability:
         errors.append("person.availability doit être vide, En recherche active, Ouvert aux opportunités ou Non disponible actuellement")
+    for index, profile_item in enumerate(person.get("profiles", []), start=1):
+        if not profile_item.get("network") or not profile_item.get("url"):
+            errors.append(f"person.profiles[{index}] doit contenir network et url")
+        elif not re.fullmatch(r"https://[^\s]+", text(profile_item["url"])):
+            errors.append(f"person.profiles[{index}].url doit être une URL HTTPS absolue")
 
     if not re.fullmatch(r"\d{4}-\d{2}", text(data.get("meta", {}).get("updated"))):
         errors.append("meta.updated doit utiliser le format YYYY-MM")
@@ -355,6 +360,10 @@ def build_header(data: dict) -> str:
         f'          <a href="{h(item["url"])}"><img src="assets/brands/{h(item["network"].lower())}.svg" alt="" aria-hidden="true" width="16" height="16">{h(item["network"])}</a>'
         for item in person["profiles"]
     )
+    print_profiles = "\n".join(
+        f'              <div><dt>{h(item["network"])}</dt><dd><a href="{h(item["url"])}">{h(item.get("username") or item["url"].removeprefix("https://").removeprefix("www."))}</a></dd></div>'
+        for item in person["profiles"]
+    )
     tags = "\n".join(f"          <li>{h(tag)}</li>" for tag in profile["tags"])
     return f'''  <header class="hero">
     <div class="hero-inner">
@@ -388,6 +397,7 @@ def build_header(data: dict) -> str:
             <dl class="print-contact-links">
               <div><dt>E-mail</dt><dd><a href="mailto:{h(person['email'])}">{h(person['email'])}</a></dd></div>
 {print_phone}              <div><dt>CV en ligne</dt><dd><a href="{h(data['meta']['canonical_url'])}">{h(data['meta']['canonical_url'].removeprefix('https://').rstrip('/'))}</a></dd></div>
+{print_profiles}
             </dl>
           </div>
 {print_qr}        </div>

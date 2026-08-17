@@ -30,7 +30,7 @@ Cette commande régénère et contrôle automatiquement :
 - le fichier défini par `meta.pdf_filename` : PDF A4 directement téléchargeable depuis le site.
 
 Les profils déclarés dans `person.profiles` sont affichés avec leur pictogramme sur
-le site et avec leur identifiant et un lien cliquable dans les coordonnées du PDF.
+le site. Le PDF conserve uniquement un lien vers le CV en ligne.
 
 Ne pas modifier directement ces fichiers générés : leurs changements seraient remplacés à la prochaine génération. Le fichier `cv.yml` est ignoré par Git pour éviter de publier accidentellement les données personnelles ; seul le modèle entièrement fictif est versionné.
 
@@ -80,9 +80,26 @@ Le téléphone est facultatif. Pour le masquer partout, conserver les deux champ
 person:
   phone_display: ""
   phone_uri: ""
+  phone_pdf_only: false
 ```
 
 Pour le réactiver, renseigner à la fois le format affiché (`phone_display`) et le format international utilisé dans les liens (`phone_uri`).
+
+Pour conserver le téléphone uniquement dans les coordonnées imprimées du PDF et
+dans la vCard du QR code, utiliser :
+
+```yaml
+person:
+  phone_display: "+33 6 12 34 56 78"
+  phone_uri: "+33612345678"
+  phone_pdf_only: true
+```
+
+Avec `phone_pdf_only: true`, le numéro n'est pas ajouté à la fenêtre de contact,
+au JSON-LD, à `resume.json` ou à `llms.txt`. Il reste nécessairement présent dans
+le code d'impression de la page HTML afin que Chromium puisse produire le PDF ;
+le PDF étant public, cette option limite l'affichage mais ne protège pas le numéro
+contre une extraction automatisée.
 
 La disponibilité utilise un statut contrôlé et une période libre. La période vaut `sous 1 mois` par défaut, mais peut aussi contenir une date précise :
 

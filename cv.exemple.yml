@@ -30,6 +30,7 @@ person:
   email: camille.martin@example.com
   phone_display: ""
   phone_uri: ""
+  phone_pdf_only: false
   photo: assets/portrait-placeholder.svg
   appointment_url: https://example.com/rendez-vous
   appointment_description: Choisir un créneau de rendez-vous

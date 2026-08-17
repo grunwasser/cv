@@ -16,6 +16,8 @@ import re
 import xml.etree.ElementTree as ET
 import yaml
 
+from scripts.build_cv import build_vcard
+
 class Audit(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -119,9 +121,19 @@ else:
 assert '<details class="earlier">' in html, "Les expériences antérieures doivent être repliées par défaut"
 assert html.count('<article class="job') == len(source["experiences"]), "Expériences HTML incomplètes"
 assert len(resume["work"]) == len(source["experiences"]), "Expériences JSON incomplètes"
-for value in filter(None, (source["person"]["email"], source["person"].get("phone_display"))):
-    assert value in html and value in llms, f"Coordonnée désynchronisée : {value}"
-if not source["person"].get("phone_display"):
+assert source["person"]["email"] in html and source["person"]["email"] in llms, "E-mail désynchronisé"
+phone_display = source["person"].get("phone_display")
+if phone_display:
+    assert phone_display in html, "Téléphone absent des coordonnées PDF"
+    if source["person"].get("phone_pdf_only", False):
+        assert phone_display not in llms, "Téléphone PDF présent dans llms.txt"
+        assert "phone" not in resume["basics"] and "telephone" not in person_ld, "Téléphone PDF présent dans les données structurées"
+        assert 'class="contact-item" href="tel:' not in html, "Téléphone PDF présent dans la fenêtre de contact web"
+    else:
+        assert phone_display in llms, "Téléphone public absent de llms.txt"
+        assert resume["basics"].get("phone") == phone_display, "Téléphone public absent du JSON"
+        assert person_ld.get("telephone") == source["person"]["phone_uri"], "Téléphone public absent du JSON-LD"
+else:
     assert "Téléphone" not in html and "Téléphone" not in llms, "Téléphone présent alors qu'il est désactivé"
     assert "phone" not in resume["basics"] and "telephone" not in person_ld, "Téléphone présent dans les données structurées"
 availability = str(source["person"].get("availability") or "")
@@ -135,6 +147,8 @@ else:
 qr_path = Path("assets/cv-qr.svg")
 if source["person"].get("show_qr_code", False):
     assert qr_path.exists() and "assets/cv-qr.svg" in html, "QR code activé mais absent"
+    if source["person"].get("phone_uri"):
+        assert f'TEL;TYPE=CELL:{source["person"]["phone_uri"]}' in build_vcard(source), "Téléphone absent de la vCard"
 else:
     assert not qr_path.exists() and "assets/cv-qr.svg" not in html, "QR code présent alors qu'il est désactivé"
 print("Structure HTML et ressources : OK")

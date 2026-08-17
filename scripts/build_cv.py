@@ -46,6 +46,8 @@ def validate_data(data: dict) -> None:
         errors.append("person.show_age doit être true ou false")
     if "show_qr_code" in person and not isinstance(person["show_qr_code"], bool):
         errors.append("person.show_qr_code doit être true ou false")
+    if "phone_pdf_only" in person and not isinstance(person["phone_pdf_only"], bool):
+        errors.append("person.phone_pdf_only doit être true ou false")
     if person.get("email") and "@" not in person["email"]:
         errors.append("person.email n'est pas une adresse valide")
     photo = Path(text(person.get("photo")))
@@ -139,6 +141,10 @@ def availability_values(person: dict) -> tuple[str, str]:
     return text(person.get("availability")).strip(), iso_date(person.get("availability_period")).strip()
 
 
+def phone_is_public(person: dict) -> bool:
+    return bool(person.get("phone_uri")) and not person.get("phone_pdf_only", False)
+
+
 def skill_keywords(item: dict) -> list[str]:
     """Retourne les compétences atomiques définies dans cv.yml."""
     return [keyword.strip() for keyword in item["keywords"]]
@@ -230,7 +236,7 @@ def build_head(data: dict) -> str:
     }
     if person.get("show_age", True):
         person_entity["birthDate"] = iso_date(person["birth_date"])
-    if person.get("phone_uri"):
+    if phone_is_public(person):
         person_entity["telephone"] = person["phone_uri"]
     title = f'{name} — {person["title"]}'
     json_ld = {
@@ -332,9 +338,10 @@ def build_header(data: dict) -> str:
         availability_html = f'        <p class="availability {availability_class}"><span class="availability-dot" aria-hidden="true"></span><span class="availability-copy">{"".join(availability_parts)}</span></p>\n'
     print_availability = ""
     if availability:
-        print_availability += f'              <div><dt>Statut</dt><dd>{h(availability)}</dd></div>\n'
+        print_availability += f'              <div class="print-availability-start"><dt>Statut</dt><dd>{h(availability)}</dd></div>\n'
     if availability_period:
-        print_availability += f'              <div><dt>Disponibilité</dt><dd>{h(availability_period)}</dd></div>\n'
+        availability_class = "" if availability else ' class="print-availability-start"'
+        print_availability += f'              <div{availability_class}><dt>Disponibilité</dt><dd>{h(availability_period)}</dd></div>\n'
     print_phone = ""
     if person.get("phone_uri"):
         print_phone = f'              <div><dt>Téléphone</dt><dd><a href="tel:{h(person["phone_uri"])}">{h(person["phone_display"])}</a></dd></div>\n'
@@ -358,10 +365,6 @@ def build_header(data: dict) -> str:
       </picture>'''
     profiles = "\n".join(
         f'          <a href="{h(item["url"])}"><img src="assets/brands/{h(item["network"].lower())}.svg" alt="" aria-hidden="true" width="16" height="16">{h(item["network"])}</a>'
-        for item in person["profiles"]
-    )
-    print_profiles = "\n".join(
-        f'              <div><dt>{h(item["network"])}</dt><dd><a href="{h(item["url"])}">{h(item.get("username") or item["url"].removeprefix("https://").removeprefix("www."))}</a></dd></div>'
         for item in person["profiles"]
     )
     tags = "\n".join(f"          <li>{h(tag)}</li>" for tag in profile["tags"])
@@ -397,7 +400,6 @@ def build_header(data: dict) -> str:
             <dl class="print-contact-links">
               <div><dt>E-mail</dt><dd><a href="mailto:{h(person['email'])}">{h(person['email'])}</a></dd></div>
 {print_phone}              <div><dt>CV en ligne</dt><dd><a href="{h(data['meta']['canonical_url'])}">{h(data['meta']['canonical_url'].removeprefix('https://').rstrip('/'))}</a></dd></div>
-{print_profiles}
 {print_availability}
             </dl>
           </div>
@@ -494,7 +496,7 @@ def education_period(item: dict) -> str:
 def build_dialog(data: dict) -> str:
     person = data["person"]
     phone = ""
-    if person.get("phone_uri"):
+    if phone_is_public(person):
         phone = f'      <a class="contact-item" href="tel:{h(person["phone_uri"])}"><span aria-hidden="true">☎</span><span><strong>Téléphone</strong>{h(person["phone_display"])}</span></a>\n'
     return f'''  <dialog class="contact-dialog" id="contact-dialog" aria-labelledby="contact-dialog-title">
     <div class="dialog-header">
@@ -547,7 +549,7 @@ def build_resume(data: dict) -> dict:
         "location": {"postalCode": person["postal_code"], "city": person["location"], "region": person["region"], "countryCode": person["country_code"]},
         "profiles": person["profiles"],
     }
-    if person.get("phone_display"):
+    if phone_is_public(person):
         basics["phone"] = person["phone_display"]
     availability, availability_period = availability_values(person)
     if availability or availability_period:
@@ -609,7 +611,7 @@ def build_llms(data: dict) -> str:
     if availability_period:
         lines.append(f"- Disponibilité : {availability_period}")
     lines.append(f'- E-mail : {person["email"]}')
-    if person.get("phone_display"):
+    if phone_is_public(person):
         lines.append(f'- Téléphone : {person["phone_display"]}')
     lines.append(f'- [Prendre rendez-vous]({person["appointment_url"]})')
     lines.extend(f'- [{item["network"]}]({item["url"]})' for item in person["profiles"])

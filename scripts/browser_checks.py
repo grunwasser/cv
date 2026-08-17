@@ -227,6 +227,8 @@ def check_pdf(path: Path) -> int:
     ]
     if person.get("driving_licence"):
         required.append(person["driving_licence"])
+    if person.get("phone_display"):
+        required.append(person["phone_display"])
     if person.get("show_age", True):
         required.append(f"{expected_age()} ans")
     for value in required:
@@ -247,17 +249,14 @@ def check_pdf(path: Path) -> int:
     if SOURCE_DATA["meta"]["canonical_url"] not in link_targets:
         raise AssertionError("le lien vers le CV en ligne n'est pas cliquable dans le PDF")
     for profile in person["profiles"]:
-        label = profile.get("username") or profile["url"].removeprefix("https://").removeprefix("www.")
-        if profile["network"].casefold() not in extracted.casefold() or label not in extracted:
-            raise AssertionError(f'profil absent du PDF : {profile["network"]}')
-        if profile["url"] not in link_targets:
-            raise AssertionError(f'lien de profil non cliquable dans le PDF : {profile["network"]}')
-    if person.get("availability") and person["profiles"]:
+        if profile["url"] in link_targets:
+            raise AssertionError(f'lien de profil présent dans le PDF : {profile["network"]}')
+    if person.get("availability"):
         extracted_folded = extracted.casefold()
-        last_profile = max(extracted_folded.find(profile["network"].casefold()) for profile in person["profiles"])
-        status_position = extracted_folded.find("statut", last_profile)
-        if status_position < last_profile:
-            raise AssertionError("le statut doit apparaître après les profils dans le PDF")
+        cv_position = extracted_folded.find("cv en ligne")
+        status_position = extracted_folded.find("statut", cv_position)
+        if cv_position < 0 or status_position < cv_position:
+            raise AssertionError("le statut doit apparaître après le lien du CV dans le PDF")
         if person.get("availability_period") and extracted_folded.find("disponibilité", status_position) < status_position:
             raise AssertionError("la disponibilité doit apparaître après le statut dans le PDF")
 

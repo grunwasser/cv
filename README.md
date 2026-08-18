@@ -56,6 +56,7 @@ Toutes les valeurs propres à une personne ou à son site sont centralisées dan
 
 ```yaml
 meta:
+  updated: 2026-08-18
   canonical_url: https://cv.example.com/
   pdf_filename: prenom-nom-cv.pdf
   pdf_pages: 2
@@ -69,6 +70,12 @@ person:
   eyebrow: Consultante indépendante
   photo: assets/portrait.jpg
 ```
+
+`meta.updated` indique la dernière modification éditoriale du CV au format
+`YYYY-MM-DD`. Le générateur l'utilise comme date ISO dans le sitemap et produit
+automatiquement le `DateTime` avec fuseau requis par Google pour
+`ProfilePage.dateModified`. L'ancien format mensuel `YYYY-MM` reste accepté et
+est interprété comme le premier jour du mois.
 
 `meta.pdf_pages` fixe le nombre exact de pages attendu par le contrôle PDF. Le nom du PDF, son lien de téléchargement, l’URL canonique, l’âge, la photo et ses variantes sont tous calculés depuis ces valeurs ; aucun changement dans les scripts n’est nécessaire.
 

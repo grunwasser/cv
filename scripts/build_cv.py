@@ -64,14 +64,6 @@ def validate_data(data: dict) -> None:
         elif not re.fullmatch(r"https://[^\s]+", text(profile_item["url"])):
             errors.append(f"person.profiles[{index}].url doit être une URL HTTPS absolue")
 
-    updated = text(data.get("meta", {}).get("updated"))
-    if not re.fullmatch(r"\d{4}-\d{2}(?:-\d{2})?", updated):
-        errors.append("meta.updated doit utiliser le format YYYY-MM-DD (YYYY-MM reste accepté)")
-    else:
-        try:
-            date.fromisoformat(updated if len(updated) == 10 else f"{updated}-01")
-        except ValueError:
-            errors.append("meta.updated contient une date invalide")
     if not re.fullmatch(r"https://[^\s]+/", text(data.get("meta", {}).get("canonical_url"))):
         errors.append("meta.canonical_url doit être une URL HTTPS absolue terminée par /")
     if not re.fullmatch(r"[A-Za-z0-9._-]+\.pdf", text(data.get("meta", {}).get("pdf_filename"))):
@@ -251,7 +243,7 @@ def build_head(data: dict) -> str:
         "@id": f"{canonical_url}#profile",
         "url": canonical_url,
         "name": title,
-        "dateModified": profile_modified_datetime(data),
+        "dateModified": profile_modified_datetime(),
         "mainEntity": person_entity,
     }
     analytics_id = h(data["meta"]["analytics_id"])
@@ -536,10 +528,9 @@ def build_html(data: dict, template: str) -> str:
     output = replace_region(output, "HEADER", build_header(data))
     output = replace_region(output, "MAIN", build_main(data))
     output = replace_region(output, "DIALOG", build_dialog(data))
-    updated = text(data["meta"]["updated"])
-    year, month = updated.split("-")[:2]
+    generated_on = date.today()
     footer = f'''  <footer>
-    <p>Dernière mise à jour : {MONTHS[month]} {year} · <a href="resume.json">Version JSON</a> · <a href="llms.txt">Version texte pour agents IA</a></p>
+    <p>Dernière mise à jour : {generated_on.day} {MONTHS[f'{generated_on.month:02d}']} {generated_on.year} · <a href="resume.json">Version JSON</a> · <a href="llms.txt">Version texte pour agents IA</a></p>
   </footer>'''
     return replace_region(output, "FOOTER", footer).rstrip() + "\n"
 
@@ -625,15 +616,14 @@ def build_llms(data: dict) -> str:
     return "\n".join(lines)
 
 
-def updated_date(data: dict) -> str:
-    """Retourne une date ISO complète, y compris pour l'ancien format mensuel."""
-    updated = text(data["meta"]["updated"])
-    return updated if len(updated) == 10 else f"{updated}-01"
+def build_date() -> str:
+    """Retourne la date du build, stable pendant toute la journée."""
+    return date.today().isoformat()
 
 
-def profile_modified_datetime(data: dict) -> str:
+def profile_modified_datetime() -> str:
     """Google ProfilePage attend un DateTime ISO 8601 avec fuseau horaire."""
-    return f"{updated_date(data)}T00:00:00+00:00"
+    return f"{build_date()}T00:00:00+00:00"
 
 
 def build_sitemap(data: dict) -> str:
@@ -642,7 +632,7 @@ def build_sitemap(data: dict) -> str:
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>{canonical_url}</loc>
-    <lastmod>{updated_date(data)}</lastmod>
+    <lastmod>{build_date()}</lastmod>
   </url>
 </urlset>
 '''

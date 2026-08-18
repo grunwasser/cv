@@ -49,8 +49,7 @@ class Audit(HTMLParser):
 html = Path("index.html").read_text(encoding="utf-8")
 htaccess = Path(".htaccess").read_text(encoding="utf-8")
 source = yaml.safe_load(Path("cv.yml").read_text(encoding="utf-8"))
-updated = str(source["meta"]["updated"])
-updated_date = updated if len(updated) == 10 else f"{updated}-01"
+build_date = date.today().isoformat()
 resume = json.loads(Path("resume.json").read_text(encoding="utf-8"))
 llms = Path("llms.txt").read_text(encoding="utf-8")
 robots = Path("robots.txt").read_text(encoding="utf-8")
@@ -91,14 +90,14 @@ assert f'rel="canonical" href="{canonical_url}"' in html, "URL canonique absolue
 assert f'property="og:url" content="{canonical_url}"' in html, "URL Open Graph incohérente"
 assert json_ld.get("@type") == "ProfilePage", "Le JSON-LD doit décrire une ProfilePage"
 assert json_ld.get("url") == canonical_url, "URL ProfilePage incohérente"
-assert json_ld.get("dateModified") == f'{updated_date}T00:00:00+00:00', "DateTime ProfilePage incohérent"
+assert json_ld.get("dateModified") == f'{build_date}T00:00:00+00:00', "DateTime ProfilePage incohérent"
 assert person_ld.get("@type") == "Person", "Entité Person absente de la ProfilePage"
 assert person_ld.get("@id") == f"{canonical_url}#person", "Identifiant de la Person incohérent"
 assert person_ld.get("hasOccupation", {}).get("name") == source["person"]["title"], "Métier JSON-LD incohérent"
 namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 assert sitemap.tag == f'{{{namespace["sm"]}}}urlset', "Racine sitemap.xml invalide"
 assert sitemap.findtext("sm:url/sm:loc", namespaces=namespace) == canonical_url, "URL du sitemap incohérente"
-assert sitemap.findtext("sm:url/sm:lastmod", namespaces=namespace) == updated_date, "Date du sitemap incohérente"
+assert sitemap.findtext("sm:url/sm:lastmod", namespaces=namespace) == build_date, "Date du sitemap incohérente"
 assert "User-agent: OAI-SearchBot\nAllow: /" in robots, "OAI-SearchBot doit être autorisé"
 assert "User-agent: GPTBot\nDisallow: /" in robots, "GPTBot doit être bloqué"
 assert f"Sitemap: {canonical_url}sitemap.xml" in robots, "Sitemap absent de robots.txt"

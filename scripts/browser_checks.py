@@ -59,6 +59,22 @@ def check_responsive(browser, page_url: str) -> None:
                 activeLanguage: document.querySelector('.language-switch [aria-current="page"]')?.textContent.trim()
             })"""
         )
+        navigation_overlap = False
+        if viewport["width"] <= 850:
+            navigation_overlap = page.evaluate(
+                """() => {
+                    scrollTo(0, document.querySelector('.hero').offsetHeight + 100);
+                    const controls = ['.language-switch', '.theme-settings']
+                        .map(selector => document.querySelector(selector)?.getBoundingClientRect())
+                        .filter(Boolean);
+                    const links = Array.from(document.querySelectorAll('.main-nav a'))
+                        .map(node => node.getBoundingClientRect());
+                    return controls.some(control => links.some(link =>
+                        control.left < link.right && control.right > link.left &&
+                        control.top < link.bottom && control.bottom > link.top
+                    ));
+                }"""
+            )
         page.close()
         if metrics["fits"] != "true":
             raise AssertionError(f"débordement horizontal en vue {name} : {metrics['overflow']} px")
@@ -79,6 +95,8 @@ def check_responsive(browser, page_url: str) -> None:
             raise AssertionError(f"ordre du sélecteur de langue incorrect en vue {name} : {metrics['languages']}")
         if metrics["languages"] and metrics["activeLanguage"] != SOURCE_DATA["meta"]["language"].upper():
             raise AssertionError(f"langue active incorrecte en vue {name} : {metrics['activeLanguage']}")
+        if navigation_overlap:
+            raise AssertionError(f"contrôles d'affichage superposés à la navigation en vue {name}")
 
 
 def check_themes(browser, page_url: str) -> None:

@@ -3,4 +3,5 @@ __pycache__/
 *.py[cod]
 *.pdf
 /cv.yml
+/cv.en.yml
 /assets/private/

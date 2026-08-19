@@ -1,0 +1,51 @@
+# Camille Martin — CV
+
+> Systems and Cloud Engineer, based in Nantes. More than 14 years of experience.
+
+## Target role
+Consulting assignments: Cloud architecture, Linux, Kubernetes, Automation, SRE.
+
+## Core skills
+- Systems: Linux, Debian, Ubuntu, Red Hat Enterprise Linux, Windows Server
+- Cloud & containers: AWS, Kubernetes, Docker, Helm, VMware
+- Automation: Ansible, Terraform, GitLab CI/CD, Python, Bash
+- Observability: Prometheus, Grafana, Elastic Stack, Centreon
+- Data: PostgreSQL, MySQL, Redis, Veeam
+
+Pragmatic approach focused on improving service reliability, automating repetitive operations and sharing knowledge with teams.
+No specific security clearance required.
+
+## Experience
+- March 2021–present: Senior Cloud Engineer, Alpha Company, Nantes.
+  - Designed and operated Kubernetes platforms for business applications.
+  - Automated deployments with Terraform, Ansible and GitLab CI/CD.
+  - Introduced reliability indicators and supported development teams.
+- January 2016–February 2021: Linux Systems Administrator, Beta Company, Rennes.
+  - Administered Linux servers and industrialised routine operations.
+  - Improved monitoring, backups and recovery procedures.
+- 2012–2015: Systems and Network Technician, Gamma Group, Angers.
+  - Provided support, administered Windows and Linux systems and networks, and managed IT assets.
+
+## Certifications & continuing education
+- [Fictional cloud certification](https://example.com/certification), 2025
+
+## Education
+- Computer Engineering Degree, Example School, 2007–2012
+
+## Languages
+- French: Native
+- English: Professional, C1
+
+## Interests
+- Open-source software: Contributions to community projects and continuous technology monitoring.
+- Personal activities: Hiking, photography and music.
+
+## Contact
+- Status: Open to opportunities
+- Availability: within 1 month
+- Email: camille.martin@example.com
+- [Book an appointment](https://example.com/appointment)
+- [LinkedIn](https://www.linkedin.com/in/camille-martin-example)
+- [GitHub](https://github.com/camille-martin-example)
+- [HTML CV](https://cv.example.com/en/)
+- [JSON data](https://cv.example.com/en/resume.json)

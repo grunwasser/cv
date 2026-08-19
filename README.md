@@ -1,6 +1,6 @@
 # Générateur de CV statique
 
-CV statique, accessible et optimisé pour les ATS, moteurs de recherche et agents IA. Tout le contenu éditable se trouve dans `cv.yml`, créé localement à partir du modèle fictif [`cv.exemple.yml`](cv.exemple.yml).
+CV statique, accessible et optimisé pour les ATS, moteurs de recherche et agents IA. Le contenu français se trouve dans `cv.yml`, créé localement à partir du modèle fictif [`cv.exemple.yml`](cv.exemple.yml). Une version anglaise optionnelle peut être fournie dans `cv.en.yml`.
 
 ## Mise à jour rapide
 
@@ -35,6 +35,25 @@ le site. Le PDF conserve uniquement un lien vers le CV en ligne.
 Ne pas modifier directement ces fichiers générés : leurs changements seraient remplacés à la prochaine génération. Le fichier `cv.yml` est ignoré par Git pour éviter de publier accidentellement les données personnelles ; seul le modèle entièrement fictif est versionné.
 
 Le premier écran est stylé par `styles-critical.css`, automatiquement intégré dans `index.html`. Le reste de la mise en page est chargé sans bloquer le rendu depuis `styles.css`. Toute modification des couleurs ou de l’en-tête doit donc être faite dans `styles-critical.css`.
+
+## Version anglaise optionnelle
+
+Lorsque `cv.en.yml` est présent, `make` génère automatiquement une version anglaise complète dans `en/` :
+
+- `en/index.html` ;
+- `en/resume.json` et `en/llms.txt` ;
+- le PDF défini par `cv.en.yml > meta.pdf_filename` ;
+- le QR code anglais lorsqu'il est activé.
+
+Les pages disposent alors d'un sélecteur `FR | EN`, de liens `hreflang` réciproques et d'un sitemap bilingue. En l'absence de `cv.en.yml`, le site reste uniquement en français et le sélecteur n'est pas affiché.
+
+Pour créer manuellement une configuration anglaise fictive :
+
+```bash
+make init-en
+```
+
+`cv.en.yml`, comme `cv.yml`, est ignoré par Git. Le fichier versionné [`cv.en.exemple.yml`](cv.en.exemple.yml) sert uniquement de modèle et aux tests publics.
 
 ## Contenu de `cv.yml`
 
@@ -184,6 +203,7 @@ La locale du terminal devrait être UTF-8, par exemple `C.UTF-8` ou `fr_FR.UTF-8
 
 ```bash
 make init     # créer cv.yml depuis le modèle fictif, sans écraser un fichier existant
+make init-en  # créer la configuration anglaise optionnelle depuis son modèle fictif
 make install-browser # créer le venv et installer Playwright + son Chromium
 make optimize-photo  # régénérer manuellement les variantes AVIF/WebP/JPEG du portrait
 make build    # optimiser le portrait puis régénérer les fichiers

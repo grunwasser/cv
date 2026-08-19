@@ -1,0 +1,156 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/master/schema.json",
+  "basics": {
+    "name": "Camille Martin",
+    "label": "Systems and Cloud Engineer",
+    "image": "assets/portrait-placeholder.svg",
+    "email": "camille.martin@example.com",
+    "url": "https://cv.example.com/en/",
+    "summary": "Engineer with more than 14 years of experience operating, automating and modernising infrastructure. Experienced in demanding environments and multidisciplinary teams. Pragmatic approach focused on improving service reliability, automating repetitive operations and sharing knowledge with teams. No specific security clearance required.",
+    "location": {
+      "postalCode": "44000",
+      "city": "Nantes",
+      "region": "Pays de la Loire",
+      "countryCode": "FR"
+    },
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "camille-martin-example",
+        "url": "https://www.linkedin.com/in/camille-martin-example"
+      },
+      {
+        "network": "GitHub",
+        "username": "camille-martin-example",
+        "url": "https://github.com/camille-martin-example"
+      }
+    ],
+    "availability": {
+      "status": "Open to opportunities",
+      "period": "within 1 month"
+    }
+  },
+  "work": [
+    {
+      "name": "Alpha Company",
+      "position": "Senior Cloud Engineer",
+      "location": "Nantes",
+      "startDate": "2021-03",
+      "endDate": "",
+      "highlights": [
+        "Designed and operated Kubernetes platforms for business applications.",
+        "Automated deployments with Terraform, Ansible and GitLab CI/CD.",
+        "Introduced reliability indicators and supported development teams."
+      ]
+    },
+    {
+      "name": "Beta Company",
+      "position": "Linux Systems Administrator",
+      "location": "Rennes",
+      "startDate": "2016-01",
+      "endDate": "2021-02",
+      "highlights": [
+        "Administered Linux servers and industrialised routine operations.",
+        "Improved monitoring, backups and recovery procedures."
+      ]
+    },
+    {
+      "name": "Gamma Group",
+      "position": "Systems and Network Technician",
+      "location": "Angers",
+      "startDate": "2012",
+      "endDate": "2015",
+      "summary": "Provided support, administered Windows and Linux systems and networks, and managed IT assets."
+    }
+  ],
+  "education": [
+    {
+      "institution": "Example School",
+      "area": "Computer Engineering Degree",
+      "startDate": "2007",
+      "endDate": "2012"
+    }
+  ],
+  "certificates": [
+    {
+      "name": "Fictional cloud certification",
+      "date": "2025",
+      "issuer": "Example Organisation",
+      "url": "https://example.com/certification"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Systems",
+      "keywords": [
+        "Linux",
+        "Debian",
+        "Ubuntu",
+        "Red Hat Enterprise Linux",
+        "Windows Server"
+      ]
+    },
+    {
+      "name": "Cloud & containers",
+      "keywords": [
+        "AWS",
+        "Kubernetes",
+        "Docker",
+        "Helm",
+        "VMware"
+      ]
+    },
+    {
+      "name": "Automation",
+      "keywords": [
+        "Ansible",
+        "Terraform",
+        "GitLab CI/CD",
+        "Python",
+        "Bash"
+      ]
+    },
+    {
+      "name": "Observability",
+      "keywords": [
+        "Prometheus",
+        "Grafana",
+        "Elastic Stack",
+        "Centreon"
+      ]
+    },
+    {
+      "name": "Data",
+      "keywords": [
+        "PostgreSQL",
+        "MySQL",
+        "Redis",
+        "Veeam"
+      ]
+    }
+  ],
+  "languages": [
+    {
+      "language": "French",
+      "fluency": "Native"
+    },
+    {
+      "language": "English",
+      "fluency": "Professional, C1"
+    }
+  ],
+  "interests": [
+    {
+      "name": "Open-source software",
+      "keywords": [
+        "Contributions to community projects and continuous technology monitoring."
+      ]
+    },
+    {
+      "name": "Personal activities",
+      "keywords": [
+        "Hiking, photography and music."
+      ]
+    }
+  ]
+}

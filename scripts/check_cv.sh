@@ -98,6 +98,17 @@ namespace = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
 assert sitemap.tag == f'{{{namespace["sm"]}}}urlset', "Racine sitemap.xml invalide"
 assert sitemap.findtext("sm:url/sm:loc", namespaces=namespace) == canonical_url, "URL du sitemap incohérente"
 assert sitemap.findtext("sm:url/sm:lastmod", namespaces=namespace) == build_date, "Date du sitemap incohérente"
+if Path("cv.en.yml").exists():
+    source_en = yaml.safe_load(Path("cv.en.yml").read_text(encoding="utf-8"))
+    html_en = Path("en/index.html").read_text(encoding="utf-8")
+    canonical_en = source_en["meta"]["canonical_url"]
+    sitemap_urls = {node.text for node in sitemap.findall("sm:url/sm:loc", namespace)}
+    assert sitemap_urls == {canonical_url, canonical_en}, "Versions linguistiques incomplètes dans le sitemap"
+    assert '<html lang="en"' in html_en, "Langue anglaise absente du HTML"
+    assert f'hreflang="fr" href="{canonical_url}"' in html_en, "Retour hreflang français absent"
+    assert f'hreflang="en" href="{canonical_en}"' in html, "Hreflang anglais absent"
+    assert 'href="../" lang="fr" hreflang="fr"' in html_en, "Switch EN vers FR absent"
+    assert 'href="en/" lang="en" hreflang="en"' in html, "Switch FR vers EN absent"
 assert "User-agent: OAI-SearchBot\nAllow: /" in robots, "OAI-SearchBot doit être autorisé"
 assert "User-agent: GPTBot\nDisallow: /" in robots, "GPTBot doit être bloqué"
 assert f"Sitemap: {canonical_url}sitemap.xml" in robots, "Sitemap absent de robots.txt"
@@ -162,6 +173,14 @@ if [[ -n ${PDF_OUTPUT:-} ]]; then
 fi
 "$python_bin" scripts/browser_checks.py "${browser_args[@]}"
 browser_status=$?
+if [[ $browser_status -eq 0 && -f cv.en.yml ]]; then
+  browser_args_en=(--source cv.en.yml --html en/index.html)
+  if [[ -n ${PDF_OUTPUT_EN:-} ]]; then
+    browser_args_en+=(--pdf-output "$PDF_OUTPUT_EN")
+  fi
+  "$python_bin" scripts/browser_checks.py "${browser_args_en[@]}"
+  browser_status=$?
+fi
 set -e
 
 if [[ $browser_status -eq 2 && ${REQUIRE_BROWSER_CHECKS:-0} != 1 ]]; then

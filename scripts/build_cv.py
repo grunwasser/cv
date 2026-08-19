@@ -612,13 +612,23 @@ def replace_region(template: str, name: str, content: str) -> str:
     return result
 
 
+def language_flag(language: str) -> str:
+    if language == "fr":
+        drawing = '''<rect width="20" height="36" fill="#0055a4"/><rect x="20" width="20" height="36" fill="#fff"/><rect x="40" width="20" height="36" fill="#ef4135"/>'''
+    else:
+        drawing = '''<rect width="60" height="36" fill="#012169"/><path d="M0 0 60 36M60 0 0 36" stroke="#fff" stroke-width="8"/><path d="M0 0 60 36M60 0 0 36" stroke="#c8102e" stroke-width="4"/><path d="M30 0v36M0 18h60" stroke="#fff" stroke-width="12"/><path d="M30 0v36M0 18h60" stroke="#c8102e" stroke-width="7"/>'''
+    return f'<svg class="language-flag" viewBox="0 0 60 36" aria-hidden="true" focusable="false">{drawing}</svg>'
+
+
 def build_html(data: dict, template: str, asset_prefix: str, alternates: dict[str, str]) -> str:
     language = data["meta"]["language"]
     labels = I18N[language]
     language_switch = ""
     if "en" in alternates:
-        french_item = '<span aria-current="page">FR</span>' if language == "fr" else '<a href="../" lang="fr" hreflang="fr">FR</a>'
-        english_item = '<span aria-current="page">EN</span>' if language == "en" else '<a href="en/" lang="en" hreflang="en">EN</a>'
+        french_content = language_flag("fr") + '<span class="visually-hidden">Français</span>'
+        english_content = language_flag("en") + '<span class="visually-hidden">English</span>'
+        french_item = f'<span data-language="fr" aria-current="page">{french_content}</span>' if language == "fr" else f'<a data-language="fr" href="../" lang="fr" hreflang="fr">{french_content}</a>'
+        english_item = f'<span data-language="en" aria-current="page">{english_content}</span>' if language == "en" else f'<a data-language="en" href="en/" lang="en" hreflang="en">{english_content}</a>'
         language_switch = french_item + english_item
     colors = labels["colors"]
     replacements = {

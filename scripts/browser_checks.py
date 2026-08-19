@@ -55,8 +55,9 @@ def check_responsive(browser, page_url: str) -> None:
                 portrait: document.querySelector('.portrait').currentSrc,
                 contactButtonWidth: document.querySelector('.contact-opener').getBoundingClientRect().width,
                 printButtonWidth: document.querySelector('.print-button').getBoundingClientRect().width,
-                languages: Array.from(document.querySelectorAll('.language-switch > *')).map(node => node.textContent.trim()),
-                activeLanguage: document.querySelector('.language-switch [aria-current="page"]')?.textContent.trim()
+                languages: Array.from(document.querySelectorAll('.language-switch > *')).map(node => node.dataset.language),
+                activeLanguage: document.querySelector('.language-switch [aria-current="page"]')?.dataset.language,
+                flags: document.querySelectorAll('.language-switch .language-flag').length
             })"""
         )
         navigation_overlap = False
@@ -91,10 +92,12 @@ def check_responsive(browser, page_url: str) -> None:
             raise AssertionError(f"format attendu du portrait non sélectionné en vue {name}")
         if abs(metrics["contactButtonWidth"] - metrics["printButtonWidth"]) > 0.5:
             raise AssertionError(f"largeurs des boutons incohérentes en vue {name}")
-        if metrics["languages"] and metrics["languages"] != ["FR", "EN"]:
+        if metrics["languages"] and metrics["languages"] != ["fr", "en"]:
             raise AssertionError(f"ordre du sélecteur de langue incorrect en vue {name} : {metrics['languages']}")
-        if metrics["languages"] and metrics["activeLanguage"] != SOURCE_DATA["meta"]["language"].upper():
+        if metrics["languages"] and metrics["activeLanguage"] != SOURCE_DATA["meta"]["language"]:
             raise AssertionError(f"langue active incorrecte en vue {name} : {metrics['activeLanguage']}")
+        if metrics["languages"] and metrics["flags"] != 2:
+            raise AssertionError(f"drapeaux de langue absents en vue {name}")
         if navigation_overlap:
             raise AssertionError(f"contrôles d'affichage superposés à la navigation en vue {name}")
 

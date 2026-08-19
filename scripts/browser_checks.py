@@ -54,7 +54,9 @@ def check_responsive(browser, page_url: str) -> None:
                 age: Array.from(document.querySelectorAll('[data-age]')).map(node => node.textContent.trim()),
                 portrait: document.querySelector('.portrait').currentSrc,
                 contactButtonWidth: document.querySelector('.contact-opener').getBoundingClientRect().width,
-                printButtonWidth: document.querySelector('.print-button').getBoundingClientRect().width
+                printButtonWidth: document.querySelector('.print-button').getBoundingClientRect().width,
+                languages: Array.from(document.querySelectorAll('.language-switch > *')).map(node => node.textContent.trim()),
+                activeLanguage: document.querySelector('.language-switch [aria-current="page"]')?.textContent.trim()
             })"""
         )
         page.close()
@@ -73,6 +75,10 @@ def check_responsive(browser, page_url: str) -> None:
             raise AssertionError(f"format attendu du portrait non sélectionné en vue {name}")
         if abs(metrics["contactButtonWidth"] - metrics["printButtonWidth"]) > 0.5:
             raise AssertionError(f"largeurs des boutons incohérentes en vue {name}")
+        if metrics["languages"] and metrics["languages"] != ["FR", "EN"]:
+            raise AssertionError(f"ordre du sélecteur de langue incorrect en vue {name} : {metrics['languages']}")
+        if metrics["languages"] and metrics["activeLanguage"] != SOURCE_DATA["meta"]["language"].upper():
+            raise AssertionError(f"langue active incorrecte en vue {name} : {metrics['activeLanguage']}")
 
 
 def check_themes(browser, page_url: str) -> None:

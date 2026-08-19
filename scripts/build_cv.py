@@ -615,14 +615,11 @@ def replace_region(template: str, name: str, content: str) -> str:
 def build_html(data: dict, template: str, asset_prefix: str, alternates: dict[str, str]) -> str:
     language = data["meta"]["language"]
     labels = I18N[language]
-    other_language = "en" if language == "fr" else "fr"
-    switch_href = "en/" if language == "fr" else "../"
     language_switch = ""
-    if other_language in alternates:
-        language_switch = (
-            f'<span aria-current="page">{language.upper()}</span>'
-            f'<a href="{switch_href}" lang="{other_language}" hreflang="{other_language}">{other_language.upper()}</a>'
-        )
+    if "en" in alternates:
+        french_item = '<span aria-current="page">FR</span>' if language == "fr" else '<a href="../" lang="fr" hreflang="fr">FR</a>'
+        english_item = '<span aria-current="page">EN</span>' if language == "en" else '<a href="en/" lang="en" hreflang="en">EN</a>'
+        language_switch = french_item + english_item
     colors = labels["colors"]
     replacements = {
         "{{skip_link}}": h(labels["skip"]), "{{display_settings}}": h(labels["display_settings"]),

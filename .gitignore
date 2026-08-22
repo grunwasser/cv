@@ -3,5 +3,6 @@ __pycache__/
 *.py[cod]
 *.pdf
 /cv.yml
+/favicon.ico
 /cv.en.yml
 /assets/private/

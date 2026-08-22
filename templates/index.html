@@ -5,28 +5,32 @@
   <!-- GENERATED:HEAD:END -->
 </head>
 <body>
-  <a class="skip-link" href="#contenu">Aller au contenu</a>
+  <a class="skip-link" href="#contenu">{{skip_link}}</a>
+
+  <nav class="language-switch" aria-label="Language">
+    {{language_switch}}
+  </nav>
 
   <div class="theme-settings">
     <button class="theme-toggle" type="button" aria-expanded="false" aria-controls="theme-panel" data-theme-toggle>
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
         <path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/>
       </svg>
-      <span class="visually-hidden">Paramètres d’affichage</span>
+      <span class="visually-hidden">{{display_settings}}</span>
     </button>
     <div class="theme-panel" id="theme-panel" hidden>
-      <label for="theme-select">Thème</label>
+      <label for="theme-select">{{theme_label}}</label>
       <select id="theme-select" data-theme-select>
-        <option value="blue">Bleu</option>
-        <option value="green">Vert</option>
-        <option value="red">Rouge</option>
-        <option value="purple">Violet</option>
-        <option value="amber">Ambre</option>
-        <option value="grey">Gris</option>
+        <option value="blue">{{color_blue}}</option>
+        <option value="green">{{color_green}}</option>
+        <option value="red">{{color_red}}</option>
+        <option value="purple">{{color_purple}}</option>
+        <option value="amber">{{color_amber}}</option>
+        <option value="grey">{{color_grey}}</option>
       </select>
       <button class="theme-mode" type="button" role="switch" aria-checked="false" data-theme-mode>
         <span class="theme-mode-track" aria-hidden="true"><span></span></span>
-        <span>Mode sombre</span>
+        <span>{{dark_mode}}</span>
       </button>
     </div>
   </div>
@@ -34,12 +38,12 @@
   <!-- GENERATED:HEADER:START -->
   <!-- GENERATED:HEADER:END -->
 
-  <nav class="main-nav" aria-label="Navigation du CV">
-    <a href="#profil">Profil</a>
-    <a href="#competences">Compétences</a>
-    <a href="#experience">Expérience</a>
-    <a href="#certifications">Certifications &amp; formation continue</a>
-    <a href="#formation">Formation</a>
+  <nav class="main-nav" aria-label="{{navigation_label}}">
+    <a href="#profil">{{nav_profile}}</a>
+    <a href="#competences">{{nav_skills}}</a>
+    <a href="#experience">{{nav_experience}}</a>
+    <a href="#certifications">{{nav_certifications}}</a>
+    <a href="#formation">{{nav_education}}</a>
   </nav>
 
   <!-- GENERATED:MAIN:START -->

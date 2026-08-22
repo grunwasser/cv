@@ -1,0 +1,122 @@
+meta:
+  canonical_url: https://cv.example.com/en/
+  pdf_filename: camille-martin-resume.pdf
+  pdf_pages: 1
+  description: >-
+    Resume of {name}, a systems and cloud specialist with more than
+    {experience_years} years of experience.
+  language: en
+  theme: blue
+  analytics_id: G-XXXXXXXXXX
+
+person:
+  first_name: Camille
+  last_name: Martin
+  birth_date: 1990-04-12
+  show_age: false
+  show_qr_code: false
+  title: Systems, Cloud & Automation Engineer
+  professional_title: Systems and Cloud Engineer
+  eyebrow: Independent consultant
+  location: Nantes
+  region: Pays de la Loire
+  postal_code: "44000"
+  country: France
+  country_code: FR
+  driving_licence: Category B driving licence
+  availability: Open to opportunities
+  availability_period: within 1 month
+  email: camille.martin@example.com
+  phone_display: ""
+  phone_uri: ""
+  phone_pdf_only: false
+  photo: assets/portrait-placeholder.svg
+  appointment_url: https://example.com/appointment
+  appointment_description: Choose an appointment slot
+  profiles:
+    - network: LinkedIn
+      username: camille-martin-example
+      url: https://www.linkedin.com/in/camille-martin-example
+    - network: GitHub
+      username: camille-martin-example
+      url: https://github.com/camille-martin-example
+
+profile:
+  experience_since: 2012
+  objective_title: Target role
+  objective_label: Consulting assignments
+  tags: [Linux, Cloud, Automation, Reliability]
+  summary: >-
+    Engineer with more than {experience_years} years of experience operating,
+    automating and modernising infrastructure. Experienced in demanding
+    environments and multidisciplinary teams.
+  specialties: [Cloud architecture, Linux, Kubernetes, Automation, SRE]
+  approach: >-
+    Pragmatic approach focused on improving service reliability, automating
+    repetitive operations and sharing knowledge with teams.
+  clearance: No specific security clearance required.
+
+experiences:
+  - company: Alpha Company
+    position: Senior Cloud Engineer
+    type: Permanent
+    location: Nantes
+    start: 2021-03
+    end: present
+    highlights:
+      - Designed and operated Kubernetes platforms for business applications.
+      - Automated deployments with Terraform, Ansible and GitLab CI/CD.
+      - Introduced reliability indicators and supported development teams.
+  - company: Beta Company
+    position: Linux Systems Administrator
+    type: Permanent
+    location: Rennes
+    start: 2016-01
+    end: 2021-02
+    highlights:
+      - Administered Linux servers and industrialised routine operations.
+      - Improved monitoring, backups and recovery procedures.
+  - company: Gamma Group
+    position: Systems and Network Technician
+    type: Permanent
+    location: Angers
+    start: "2012"
+    end: "2015"
+    compact: true
+    summary: Provided support, administered Windows and Linux systems and networks, and managed IT assets.
+
+skills:
+  - name: Systems
+    keywords: [Linux, Debian, Ubuntu, Red Hat Enterprise Linux, Windows Server]
+  - name: Cloud & containers
+    keywords: [AWS, Kubernetes, Docker, Helm, VMware]
+  - name: Automation
+    keywords: [Ansible, Terraform, GitLab CI/CD, Python, Bash]
+  - name: Observability
+    keywords: [Prometheus, Grafana, Elastic Stack, Centreon]
+  - name: Data
+    keywords: [PostgreSQL, MySQL, Redis, Veeam]
+
+certifications:
+  - name: Fictional cloud certification
+    issuer: Example Organisation
+    date: "2025"
+    url: https://example.com/certification
+
+education:
+  - degree: Computer Engineering Degree
+    institution: Example School
+    start: "2007"
+    end: "2012"
+
+languages:
+  - language: French
+    level: Native
+  - language: English
+    level: Professional, C1
+
+interests:
+  - name: Open-source software
+    details: Contributions to community projects and continuous technology monitoring.
+  - name: Personal activities
+    details: Hiking, photography and music.

@@ -64,7 +64,7 @@ footer a { color:#fff; }
   .print-qr span { display:block; color:#666; font-size:6.5pt; font-weight:700; text-transform:uppercase; letter-spacing:.04em; }
   .pill-list { flex-wrap:nowrap; gap:3px; }
   .pill-list li { padding:1px 4px; border-color:#777; font-size:7pt; white-space:nowrap; }
-  .main-nav,.print-button,.contact-dialog,.theme-settings,.skip-link,footer { display:none; }
+  .main-nav,.print-button,.contact-dialog,.theme-settings,.language-switch,.skip-link,footer { display:none; }
   .layout { width:100%; margin:2px 0; display:block; }
   section { margin:0 0 5px; padding:0; background:#fff; box-shadow:none; break-inside:auto; }
   .specialties { color:var(--navy); background:#fff; }

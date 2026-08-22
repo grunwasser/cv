@@ -6,6 +6,7 @@ cd "$project_dir"
 
 generated_candidates=(
   index.html resume.json llms.txt robots.txt sitemap.xml assets/cv-qr.svg
+  en/index.html en/resume.json en/llms.txt en/assets/cv-qr.svg
 )
 for path in assets/*-{180,360}.{avif,webp,jpg}; do
   [[ -e $path ]] && generated_candidates+=("$path")

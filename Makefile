@@ -2,9 +2,10 @@ VENV ?= .venv
 VENV_PYTHON := $(VENV)/bin/python
 PYTHON ?= $(if $(wildcard $(VENV_PYTHON)),$(VENV_PYTHON),python3)
 PDF ?= $(shell $(PYTHON) scripts/build_cv.py --print-pdf-filename)
+PDF_EN ?= $(if $(wildcard cv.en.yml),en/$(shell $(PYTHON) scripts/build_cv.py --print-pdf-filename --language en),)
 .DEFAULT_GOAL := update
 
-.PHONY: init install install-browser optimize-photo build check update sync serve pdf
+.PHONY: init init-en install install-browser optimize-photo build check update sync serve pdf
 
 init:
 	@if test -e cv.yml; then \
@@ -12,6 +13,14 @@ init:
 	else \
 		cp cv.exemple.yml cv.yml; \
 		echo "cv.yml créé depuis cv.exemple.yml"; \
+	fi
+
+init-en:
+	@if test -e cv.en.yml; then \
+		echo "cv.en.yml existe déjà : aucun fichier remplacé"; \
+	else \
+		cp cv.en.exemple.yml cv.en.yml; \
+		echo "cv.en.yml créé depuis cv.en.exemple.yml"; \
 	fi
 
 $(VENV_PYTHON):
@@ -34,7 +43,7 @@ build: optimize-photo
 	$(PYTHON) scripts/build_cv.py
 
 check: build
-	PYTHON_BIN="$(PYTHON)" PDF_OUTPUT="$(PDF)" REQUIRE_BROWSER_CHECKS=1 ./scripts/check_cv.sh
+	PYTHON_BIN="$(PYTHON)" PDF_OUTPUT="$(PDF)" PDF_OUTPUT_EN="$(PDF_EN)" REQUIRE_BROWSER_CHECKS=1 ./scripts/check_cv.sh
 
 update: check
 

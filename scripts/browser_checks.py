@@ -23,7 +23,8 @@ except ImportError as exc:
 
 
 ROOT = Path(__file__).resolve().parent.parent
-SOURCE_DATA = yaml.safe_load((ROOT / "cv.yml").read_text(encoding="utf-8"))
+SOURCE_DATA = {}
+HTML_PATH = ROOT / "index.html"
 VIEWPORTS = {
     "ordinateur": {"width": 1366, "height": 900},
     "tablette": {"width": 768, "height": 1024},
@@ -53,14 +54,34 @@ def check_responsive(browser, page_url: str) -> None:
                 age: Array.from(document.querySelectorAll('[data-age]')).map(node => node.textContent.trim()),
                 portrait: document.querySelector('.portrait').currentSrc,
                 contactButtonWidth: document.querySelector('.contact-opener').getBoundingClientRect().width,
-                printButtonWidth: document.querySelector('.print-button').getBoundingClientRect().width
+                printButtonWidth: document.querySelector('.print-button').getBoundingClientRect().width,
+                languages: Array.from(document.querySelectorAll('.language-switch > *')).map(node => node.dataset.language),
+                activeLanguage: document.querySelector('.language-switch [aria-current="page"]')?.dataset.language,
+                flags: document.querySelectorAll('.language-switch .language-flag').length
             })"""
         )
+        navigation_overlap = False
+        if viewport["width"] <= 850:
+            navigation_overlap = page.evaluate(
+                """() => {
+                    scrollTo(0, document.querySelector('.hero').offsetHeight + 100);
+                    const controls = ['.language-switch', '.theme-settings']
+                        .map(selector => document.querySelector(selector)?.getBoundingClientRect())
+                        .filter(Boolean);
+                    const links = Array.from(document.querySelectorAll('.main-nav a'))
+                        .map(node => node.getBoundingClientRect());
+                    return controls.some(control => links.some(link =>
+                        control.left < link.right && control.right > link.left &&
+                        control.top < link.bottom && control.bottom > link.top
+                    ));
+                }"""
+            )
         page.close()
         if metrics["fits"] != "true":
             raise AssertionError(f"débordement horizontal en vue {name} : {metrics['overflow']} px")
         if SOURCE_DATA["person"].get("show_age", True):
-            expected = f"{expected_age()} ans"
+            suffix = "ans" if SOURCE_DATA["meta"]["language"] == "fr" else "years old"
+            expected = f"{expected_age()} {suffix}"
             if not metrics["age"] or any(value != expected for value in metrics["age"]):
                 raise AssertionError(f"âge dynamique incorrect en vue {name} : {metrics['age']}")
         elif metrics["age"]:
@@ -71,6 +92,14 @@ def check_responsive(browser, page_url: str) -> None:
             raise AssertionError(f"format attendu du portrait non sélectionné en vue {name}")
         if abs(metrics["contactButtonWidth"] - metrics["printButtonWidth"]) > 0.5:
             raise AssertionError(f"largeurs des boutons incohérentes en vue {name}")
+        if metrics["languages"] and metrics["languages"] != ["fr", "en"]:
+            raise AssertionError(f"ordre du sélecteur de langue incorrect en vue {name} : {metrics['languages']}")
+        if metrics["languages"] and metrics["activeLanguage"] != SOURCE_DATA["meta"]["language"]:
+            raise AssertionError(f"langue active incorrecte en vue {name} : {metrics['activeLanguage']}")
+        if metrics["languages"] and metrics["flags"] != 2:
+            raise AssertionError(f"drapeaux de langue absents en vue {name}")
+        if navigation_overlap:
+            raise AssertionError(f"contrôles d'affichage superposés à la navigation en vue {name}")
 
 
 def check_themes(browser, page_url: str) -> None:
@@ -230,13 +259,15 @@ def check_pdf(path: Path) -> int:
     if person.get("phone_display"):
         required.append(person["phone_display"])
     if person.get("show_age", True):
-        required.append(f"{expected_age()} ans")
+        suffix = "ans" if SOURCE_DATA["meta"]["language"] == "fr" else "years old"
+        required.append(f"{expected_age()} {suffix}")
     for value in required:
         if value not in extracted:
             raise AssertionError(f"contenu absent du PDF : {value}")
 
-    qr_expected = "assets/cv-qr.svg" in (ROOT / "index.html").read_text(encoding="utf-8")
-    if qr_expected != ("AJOUTER LE CONTACT" in " ".join(extracted.split())):
+    qr_expected = "assets/cv-qr.svg" in HTML_PATH.read_text(encoding="utf-8")
+    qr_label = "AJOUTER LE CONTACT" if SOURCE_DATA["meta"]["language"] == "fr" else "ADD CONTACT"
+    if qr_expected != (qr_label in " ".join(extracted.split())):
         raise AssertionError("état du QR code incohérent entre le HTML et le PDF")
 
     link_targets = []
@@ -253,14 +284,21 @@ def check_pdf(path: Path) -> int:
             raise AssertionError(f'lien de profil présent dans le PDF : {profile["network"]}')
     if person.get("availability"):
         extracted_folded = extracted.casefold()
-        cv_position = extracted_folded.find("cv en ligne")
-        status_position = extracted_folded.find("statut", cv_position)
+        cv_label = "cv en ligne" if SOURCE_DATA["meta"]["language"] == "fr" else "online cv"
+        status_label = "statut" if SOURCE_DATA["meta"]["language"] == "fr" else "status"
+        availability_label = "disponibilité" if SOURCE_DATA["meta"]["language"] == "fr" else "availability"
+        cv_position = extracted_folded.find(cv_label)
+        status_position = extracted_folded.find(status_label, cv_position)
         if cv_position < 0 or status_position < cv_position:
             raise AssertionError("le statut doit apparaître après le lien du CV dans le PDF")
-        if person.get("availability_period") and extracted_folded.find("disponibilité", status_position) < status_position:
+        if person.get("availability_period") and extracted_folded.find(availability_label, status_position) < status_position:
             raise AssertionError("la disponibilité doit apparaître après le statut dans le PDF")
 
-    ordered = ("COMPÉTENCES TECHNIQUES", "CERTIFICATIONS", "FORMATION", "LANGUES", "CENTRES D’INTÉRÊT")
+    ordered = (
+        ("COMPÉTENCES TECHNIQUES", "CERTIFICATIONS", "FORMATION", "LANGUES", "CENTRES D’INTÉRÊT")
+        if SOURCE_DATA["meta"]["language"] == "fr"
+        else ("TECHNICAL SKILLS", "CERTIFICATIONS", "EDUCATION", "LANGUAGES", "INTERESTS")
+    )
     positions = [extracted.find(section) for section in ordered]
     if -1 in positions or positions != sorted(positions):
         raise AssertionError("ordre de lecture ATS incorrect dans le PDF")
@@ -268,9 +306,14 @@ def check_pdf(path: Path) -> int:
 
 
 def main() -> None:
+    global SOURCE_DATA, HTML_PATH
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--pdf-output", type=Path, help="conserver le PDF à cet emplacement")
+    parser.add_argument("--source", type=Path, default=ROOT / "cv.yml", help="fichier YAML à contrôler")
+    parser.add_argument("--html", type=Path, default=ROOT / "index.html", help="page HTML à contrôler")
     args = parser.parse_args()
+    SOURCE_DATA = yaml.safe_load(args.source.resolve().read_text(encoding="utf-8"))
+    HTML_PATH = args.html.resolve()
     temporary_dir = None
     if args.pdf_output:
         pdf_path = args.pdf_output.resolve()
@@ -292,7 +335,7 @@ def main() -> None:
                 )
                 print(f"Détail Playwright : {exc}", file=sys.stderr)
                 raise SystemExit(2) from exc
-            page_url = (ROOT / "index.html").as_uri()
+            page_url = HTML_PATH.as_uri()
             check_responsive(browser, page_url)
             check_themes(browser, page_url)
             generate_pdf(browser, page_url, pdf_path)
@@ -302,7 +345,7 @@ def main() -> None:
         if temporary_dir:
             temporary_dir.cleanup()
 
-    print("Responsive Playwright ordinateur/tablette/smartphone : OK")
+    print(f"Responsive Playwright ordinateur/tablette/smartphone ({SOURCE_DATA['meta']['language']}) : OK")
     print("Contraste des 6 couleurs en modes clair et sombre : OK")
     print(f"PDF Playwright A4 et ordre de lecture ATS : {pages} pages")
     if args.pdf_output:
